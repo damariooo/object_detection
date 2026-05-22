@@ -3,8 +3,18 @@ from ultralytics import YOLO
 
 app = FastAPI()
 
-model = YOLO("best.pt")
+model = None
+
+@app.on_event("startup")
+def startup_event():
+    global model
+
+    print("LOADING MODEL...")
+
+    model = YOLO("best.pt")
+
+    print("MODEL LOADED")
 
 @app.get("/")
 def home():
-    return {"status": "MODEL LOADED"}
+    return {"status": "RUNNING"}
